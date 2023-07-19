@@ -2,6 +2,7 @@ package storage
 
 import "sync"
 
+//go:generate mockery --name LinksStorage
 type LinksStorage interface {
 	Add(link string)
 	IsPresent(link string) bool

@@ -4,6 +4,7 @@ import (
 	"url-crawler/task"
 )
 
+//go:generate mockery --name Queue
 type Queue interface {
 	Add(task task.Task)
 	Get() task.Task

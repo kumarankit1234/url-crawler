@@ -1,7 +1,7 @@
 package crawler
 
 import (
-	"time"
+	"net/http"
 	"url-crawler/processor"
 	"url-crawler/queue"
 	"url-crawler/storage"
@@ -63,7 +63,10 @@ func New(options Options) Crawler {
 
 	linksStorage := storage.NewLinksStorage()
 
-	downloadProcessor := processor.NewDownloadProcessor(100*time.Second, linksStorage)
+	downloadClient := &http.Client{
+		Timeout: 100,
+	}
+	downloadProcessor := processor.NewDownloadProcessor(downloadClient)
 	downloadWorkers := workers.NewConcurrentWorkers(downloaderQueue, parserQueue, downloadProcessor, dWorkerCount)
 
 	parseProcessor := processor.NewHtmlParser(linksStorage)

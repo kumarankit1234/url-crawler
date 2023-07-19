@@ -5,23 +5,22 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"time"
-	"url-crawler/storage"
 	task2 "url-crawler/task"
 	url_checker "url-crawler/url-checker"
 )
 
 type downloadProcessor struct {
-	downloadClient http.Client
-	linksStorage   storage.LinksStorage
+	downloader Downloader
 }
 
-func NewDownloadProcessor(timeout time.Duration, linksStorage storage.LinksStorage) Processor {
+//go:generate mockery --name Downloader
+type Downloader interface {
+	Get(url string) (resp *http.Response, err error)
+}
+
+func NewDownloadProcessor(downloader Downloader) Processor {
 	return &downloadProcessor{
-		downloadClient: http.Client{
-			Timeout: timeout,
-		},
-		linksStorage: linksStorage,
+		downloader: downloader,
 	}
 }
 
@@ -37,7 +36,7 @@ func (d *downloadProcessor) Process(task task2.Task) ([]task2.Task, error) {
 		return []task2.Task{}, nil
 	}
 
-	resp, err := d.downloadClient.Get(currentUrl)
+	resp, err := d.downloader.Get(currentUrl)
 	if err != nil {
 		fmt.Println(err)
 		return []task2.Task{}, err

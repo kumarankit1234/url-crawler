@@ -134,7 +134,3 @@ func (m *mockLinks) IsPresent(link string) bool {
 	}
 	return false
 }
-
-func (m *mockLinks) GetAll() []string {
-	return m.visitedLinks
-}
