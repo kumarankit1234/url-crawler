@@ -2,6 +2,7 @@ package crawler
 
 import (
 	"net/http"
+	"time"
 	"url-crawler/processor"
 	"url-crawler/queue"
 	"url-crawler/storage"
@@ -37,6 +38,14 @@ type crawlerImpl struct {
 	linksStorage    storage.LinksStorage
 }
 
+/*
+New is used to initialize a crawler
+It internally uses two queues
+Downloader Queue is the queue where an url is put to be downloaded. It is a FIFO queue
+Download workers reads the url from the queue, downloads the html and put it in Parser Queue
+Parser workers reads the html from the parser queue, parse the html to get all links,
+filter the required links and put it to the downloader queue.
+*/
 func New(options Options) Crawler {
 	dqSize := downloaderQueueSize
 	if options.DownloaderQueueSize != 0 {
@@ -64,7 +73,7 @@ func New(options Options) Crawler {
 	linksStorage := storage.NewLinksStorage()
 
 	downloadClient := &http.Client{
-		Timeout: 100,
+		Timeout: 100 * time.Second,
 	}
 	downloadProcessor := processor.NewDownloadProcessor(downloadClient)
 	downloadWorkers := workers.NewConcurrentWorkers(downloaderQueue, parserQueue, downloadProcessor, dWorkerCount)

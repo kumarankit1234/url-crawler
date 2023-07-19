@@ -20,6 +20,10 @@ func NewHtmlParser(linksStorage storage.LinksStorage) Processor {
 	}
 }
 
+/*
+Process takes the parser task as input, parse the html to get the links,
+filter out invalid, already visited, and different sub-domains links,
+*/
 func (h *htmlParser) Process(task task2.Task) ([]task2.Task, error) {
 	parseTask, ok := task.(task2.ParseTask)
 	if !ok {

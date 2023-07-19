@@ -24,6 +24,9 @@ func NewDownloadProcessor(downloader Downloader) Processor {
 	}
 }
 
+/*
+Process takes the Download Task as input, downloads the html and return the parser task as output
+*/
 func (d *downloadProcessor) Process(task task2.Task) ([]task2.Task, error) {
 	downloadTask, ok := task.(task2.DownloadTask)
 	if !ok {
@@ -38,13 +41,13 @@ func (d *downloadProcessor) Process(task task2.Task) ([]task2.Task, error) {
 
 	resp, err := d.downloader.Get(currentUrl)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("error in downloading html of url, %+v, with err %+v", currentUrl, err)
 		return []task2.Task{}, err
 	}
 
 	resBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("error in reading response body of url, %+v, with err %+v", currentUrl, err)
 		return []task2.Task{}, err
 	}
 	return []task2.Task{
