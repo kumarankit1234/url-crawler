@@ -47,6 +47,7 @@ func (h *htmlParser) Process(task task2.Task) ([]task2.Task, error) {
 
 	var outputTasks []task2.Task
 	for _, link := range links {
+		h.linksStorage.Add(link)
 		outputTasks = append(outputTasks, task2.DownloadTask{
 			URL:         link,
 			StartingURL: parseTask.StartingURL,

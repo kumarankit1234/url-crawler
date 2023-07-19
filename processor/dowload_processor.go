@@ -36,7 +36,6 @@ func (d *downloadProcessor) Process(task task2.Task) ([]task2.Task, error) {
 		fmt.Printf("Unable to parse this url %v, with error, not valid url\n", currentUrl)
 		return []task2.Task{}, nil
 	}
-	d.linksStorage.Add(currentUrl)
 
 	resp, err := d.downloadClient.Get(currentUrl)
 	if err != nil {

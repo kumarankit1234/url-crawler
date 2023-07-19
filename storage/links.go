@@ -1,34 +1,28 @@
 package storage
 
+import "sync"
+
 type LinksStorage interface {
 	Add(link string)
 	IsPresent(link string) bool
-	GetAll() []string
 }
 
 func NewLinksStorage() LinksStorage {
-	return &linksStorageImpl{
-		links: []string{},
-	}
+	return &linksStorageImpl{}
 }
 
 type linksStorageImpl struct {
-	links []string
+	linkMap sync.Map
 }
 
 func (l *linksStorageImpl) Add(link string) {
-	l.links = append(l.links, link)
+	l.linkMap.Store(link, true)
 }
 
 func (l *linksStorageImpl) IsPresent(link string) bool {
-	for _, presentLink := range l.links {
-		if presentLink == link {
-			return true
-		}
+	entry, found := l.linkMap.Load(link)
+	if found && entry.(bool) {
+		return true
 	}
 	return false
-}
-
-func (l *linksStorageImpl) GetAll() []string {
-	return l.links
 }

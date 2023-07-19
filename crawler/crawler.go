@@ -34,6 +34,7 @@ type crawlerImpl struct {
 	parserQueue     queue.Queue
 	downloadWorkers workers.Workers
 	parseWorkers    workers.Workers
+	linksStorage    storage.LinksStorage
 }
 
 func New(options Options) Crawler {
@@ -75,11 +76,13 @@ func New(options Options) Crawler {
 		parserQueue:     parserQueue,
 		downloadWorkers: downloadWorkers,
 		parseWorkers:    parseWorkers,
+		linksStorage:    linksStorage,
 	}
 
 }
 
 func (c *crawlerImpl) Start(url string) {
+	c.linksStorage.Add(url)
 	c.downloaderQueue.Add(task.DownloadTask{
 		URL:         url,
 		StartingURL: url,

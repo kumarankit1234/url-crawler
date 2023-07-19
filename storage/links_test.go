@@ -9,9 +9,7 @@ func TestLinksStorageImpl_Add(t *testing.T) {
 	l := NewLinksStorage()
 	link := "www.abc.com"
 	l.Add(link)
-	allVisited := l.GetAll()
-	assert.Equal(t, 1, len(allVisited))
-	assert.Equal(t, allVisited, []string{link})
+	assert.True(t, l.IsPresent("www.abc.com"))
 }
 
 func TestLinksStorageImpl_IsPresent(t *testing.T) {
