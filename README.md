@@ -1,6 +1,15 @@
 # Design
 ![image info](./design.png)
 
+# How to run the code
+
+<ol>
+    <li>Clone the repo locally</li>
+    <li>cd url-checker</li>
+    <li>go mod tidy</li>
+    <li>go run main.go</li>
+</ol>
+
 # How to use
 ```
 urlCrawler := crawler.New(crawler.Options{})
@@ -11,3 +20,4 @@ for !urlCrawler.IsDone() {
 urlCrawler.Stop()
 
 ```
+
