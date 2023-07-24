@@ -18,6 +18,12 @@ type concurrentWorkers struct {
 	ongoingTask int64
 }
 
+/*
+NewConcurrentWorkers is an implementation of Workers
+It reads from the input Queue, call the processor method with the input queue task,
+and writes the output to the output queue.
+The number of worker that can concurrently can be configured.
+*/
 func NewConcurrentWorkers(inputQ queue.Queue, outputQ queue.Queue, p processor.Processor, numWorkers int) Workers {
 	return &concurrentWorkers{
 		inputQueue:  inputQ,

@@ -13,8 +13,8 @@ import (
 const (
 	downloaderQueueSize   = 100000
 	parserQueueSize       = 100000
-	downloaderWorkerCount = 10
-	parserWorkerCount     = 5
+	downloaderWorkerCount = 20
+	parserWorkerCount     = 10
 )
 
 type Crawler interface {
